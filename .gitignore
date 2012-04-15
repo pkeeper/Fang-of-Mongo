@@ -1,3 +1,2 @@
 #ignore python compiled files
-*.pyc
-*.swp
+**/db/*.db
