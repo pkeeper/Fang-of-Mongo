@@ -2,7 +2,6 @@
 # Calculation of directories relative to the module location
 #==============================================================================
 import os
-import sys
 import fangofmongo
 paths = lambda *p: os.path.join(*p)
 
@@ -123,6 +122,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'piston',
     'fangofmongo.fom',
+    'fangofmongo.rest',
 )
 
 

@@ -7,6 +7,25 @@ from django.core.urlresolvers import reverse
 from piston.handler import AnonymousBaseHandler
 from piston.utils import rc
 
+#read ->
+#    0 obj - NOT_FOUND
+#    1 obj - OK
+#   +1 obj - BAD_REQUEST
+#
+#create ->
+#    0 obj - OK
+#    1 obj - DUPLICATE_ENTRY
+#   +1 obj - DUPLICATE_ENTRY
+#
+#update ->
+#    0 obj - NOT_FOUND
+#    1 obj - ALL_OK
+#   +1 obj - BAD_REQUEST
+#
+#delete ->
+#    0 obj - NOT_HERE
+#    1 obj - DELETED
+#    +1 obj - DUPLICATE_ENTRY
 
 
 class MongoServerHandler(AnonymousBaseHandler):
@@ -118,6 +137,6 @@ class CollectionHandler(AnonymousBaseHandler):
 
         cl_url = lambda cl: reverse('api:show-collection', kwargs=dict(server, collection=cl, emitter_format=kwargs.get('emitter_format')))
 
-        result['database']['collections'] = [dict(name=cl, resource=cl_url(cl)) for cl in collection_names]
+        result['database']['collections'] = [dict(name=cl, resource=cl_url(cl)) for cl in mongo_collection]
 
         return result
