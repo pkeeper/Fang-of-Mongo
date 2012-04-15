@@ -1,10 +1,12 @@
 from django.conf.urls.defaults import patterns, url
 
 from piston.resource import Resource
-from fangofmongo.rest.handlers import MongoServerHandler, DatabaseHandler
 
-databases_resource = Resource(handler=MongoServerHandler)
-collections_resource = Resource(handler=DatabaseHandler)
+from fangofmongo.rest.server import MongoServerHandler
+from fangofmongo.rest.database import MongoDatabaseHandler
+
+server_resource = Resource(handler=MongoServerHandler)
+database_resource = Resource(handler=MongoDatabaseHandler)
 
 def eurl(regex, *args, **kwargs):
     if regex.endswith(r'$'):
@@ -15,13 +17,13 @@ def eurl(regex, *args, **kwargs):
     return url(regex, *args, **kwargs)
 
 urlpatterns = patterns('',
-    eurl(r'^(?P<host>[^/:]+?):(?P<port>\d+)$', databases_resource, name='list-databases'),
+    eurl(r'^(?P<host>[^/:]+?):(?P<port>\d+)$', server_resource, name='list-databases'),
 
 
-    eurl(r'^(?P<host>[^/:]+?):(?P<port>\d+)/(?P<db>[^ .$/\\]{1,64})$', collections_resource, name='show-database'),
+    eurl(r'^(?P<host>[^/:]+?):(?P<port>\d+)/(?P<db>[^ .$/\\]{1,64})$', database_resource, name='show-database'),
 
 
-    eurl(r'^(?P<host>[^/:]+?):(?P<port>\d+)/(?P<db>[^ .$/\\]{1,64})/(?P<collection>[^$]{1,64}?)$', collections_resource, name='show-collection'),
+    eurl(r'^(?P<host>[^/:]+?):(?P<port>\d+)/(?P<db>[^ .$/\\]{1,64})/(?P<collection>[^$]{1,64}?)$', database_resource, name='show-collection'),
 
 )
 
