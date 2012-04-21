@@ -125,5 +125,6 @@ class GenericMongoHandler(AnonymousBaseHandler):
         except MongoHandlerError as e:
             return e.message
 
+
     def on_read(self, request, *args, **kwargs):
-        pass
+        raise NotImplementedError

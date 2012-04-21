@@ -8,11 +8,14 @@ class MongoDatabaseHandler(GenericMongoHandler):
         with self.get_mongo(db) as mongo_db:
             collection_names = mongo_db.collection_names()
 
+        return self.render_list_collections(db, collection_names)
+
+    def render_list_collections(self, db, collection_names):
         result = self.get_serverinfo()
         result['database'] = {
             'name': db,
             'resource': self.get_url('show-database', db=db),
-        }
+            }
         result['database']['collections'] = [{
             'name': cl,
             'resource': self.get_url('show-collection', db=db, collection=cl)

@@ -117,13 +117,26 @@ TEMPLATE_DIRS = (
     paths(PROJECT_DIR, PROJECT_MODULE_NAME),
 )
 
+
 INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
-    'piston',
+)
+
+try:
+    #noinspection PyUnresolvedReferences
+    import django_extensions
+    INSTALLED_APPS += ('django_extensions',)
+except ImportError:
+    pass
+
+INSTALLED_APPS += (
     'fangofmongo.fom',
     'fangofmongo.rest',
 )
 
 
 #FOM_PLUGIN_DIR = '%s/plugins/' % ROOT_DIRECTORY
+
+PISTON_EMAIL_ERRORS = not DEBUG
+PISTON_DISPLAY_ERRORS = not DEBUG

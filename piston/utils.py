@@ -1,14 +1,19 @@
+from functools import partial
 import time
+import urllib
+import re
 from django.http import   HttpResponse
 from django.core.cache import cache
 from django import get_version as django_version
-from django.core.mail import send_mail, mail_admins
-from django.conf import settings
-from django.utils.translation import ugettext as _
-from django.template import loader, TemplateDoesNotExist
-from django.contrib.sites.models import Site
+from django.utils import simplejson
+from django.utils.encoding import smart_str
+from django.core.serializers.json import DjangoJSONEncoder
+from pymongo import json_util
 
 __version__ = '0.2.3rc1-p1'
+
+single2double = partial(re.compile(r'(?<=[ [:,{])\'|\'(?=[\]:,}])').sub, '"')
+
 
 def get_version():
     return __version__
@@ -267,7 +272,7 @@ class Mimer(object):
         return cls.TYPES.pop(loadee)
 
 def translate_mime(request):
-    request = Mimer(request).translate()
+    return Mimer(request).translate()
     
 def require_mime(*mimes):
     """
@@ -294,47 +299,41 @@ def require_mime(*mimes):
     return wrap
 
 require_extended = require_mime('json', 'yaml', 'xml', 'pickle')
-    
-def send_consumer_mail(consumer):
+
+
+class PyMongoJSONEncoder(DjangoJSONEncoder):
+
+    def default(self, o):
+        try:
+            return json_util.default(o)
+        except TypeError:
+            return super(PyMongoJSONEncoder, self).default(o)
+
+json_parse = partial(simplejson.loads, object_hook=json_util.object_hook)
+json_stringify =  partial(simplejson.dumps, cls=PyMongoJSONEncoder, ensure_ascii=False)
+
+
+
+def to_bytes(obj):
+    if isinstance(obj, dict):
+        return dict((json_smart_str(key), to_bytes(val)) for key, val in obj.iteritems())
+    elif isinstance(obj, (list, tuple)):
+        return list(to_bytes(val) for val in obj)
+    return json_smart_str(obj)
+
+def json_smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
+    return single2double(smart_str(**locals()))
+
+def json_urlencode(query, doseq=0):
     """
-    Send a consumer an email depending on what their status is.
+    A version of django's urlencode() function that replaces single quotes
+    with double quotes to be JSON conform
     """
-    try:
-        subject = settings.PISTON_OAUTH_EMAIL_SUBJECTS[consumer.status]
-    except AttributeError:
-        subject = "Your API Consumer for %s " % Site.objects.get_current().name
-        if consumer.status == "accepted":
-            subject += "was accepted!"
-        elif consumer.status == "canceled":
-            subject += "has been canceled."
-        elif consumer.status == "rejected":
-            subject += "has been rejected."
-        else: 
-            subject += "is awaiting approval."
-
-    template = "piston/mails/consumer_%s.txt" % consumer.status    
-    
-    try:
-        body = loader.render_to_string(template, 
-            { 'consumer' : consumer, 'user' : consumer.user })
-    except TemplateDoesNotExist:
-#        They haven't set up the templates, which means they might not want
-#        these emails sent.
-        return
-
-    try:
-        sender = settings.PISTON_FROM_EMAIL
-    except AttributeError:
-        sender = settings.DEFAULT_FROM_EMAIL
-
-    if consumer.user:
-        send_mail(_(subject), body, sender, [consumer.user.email], fail_silently=True)
-
-    if consumer.status == 'pending' and len(settings.ADMINS):
-        mail_admins(_(subject), body, fail_silently=True)
-
-    if settings.DEBUG and consumer.user:
-        print "Mail being sent, to=%s" % consumer.user.email
-        print "Subject: %s" % _(subject)
-        print body
-
+    if hasattr(query, 'items'):
+        query = query.items()
+    to_enc = []
+    for k, v in query:
+        to_enc.append((json_smart_str(k),
+            [json_smart_str(i) for i in v] if isinstance(v, (list,tuple))
+            else json_smart_str(v)))
+    return urllib.urlencode(to_enc, doseq)

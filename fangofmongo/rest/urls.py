@@ -4,9 +4,11 @@ from piston.resource import Resource
 
 from fangofmongo.rest.server import MongoServerHandler
 from fangofmongo.rest.database import MongoDatabaseHandler
+from fangofmongo.rest.collection import MongoCollectionHandler
 
 server_resource = Resource(handler=MongoServerHandler)
 database_resource = Resource(handler=MongoDatabaseHandler)
+collection_resource = Resource(handler=MongoCollectionHandler)
 
 def eurl(regex, *args, **kwargs):
     if regex.endswith(r'$'):
@@ -23,7 +25,7 @@ urlpatterns = patterns('',
     eurl(r'^(?P<host>[^/:]+?):(?P<port>\d+)/(?P<db>[^ .$/\\]{1,64})$', database_resource, name='show-database'),
 
 
-    eurl(r'^(?P<host>[^/:]+?):(?P<port>\d+)/(?P<db>[^ .$/\\]{1,64})/(?P<collection>[^$]{1,64}?)$', database_resource, name='show-collection'),
+    eurl(r'^(?P<host>[^/:]+?):(?P<port>\d+)/(?P<db>[^ .$/\\]{1,64})/(?P<collection>[^$]{1,64}?)$', collection_resource, {'method':'query'}, name='show-collection'),
 
 )
 
