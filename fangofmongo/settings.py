@@ -83,7 +83,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    # TODO: drop this and move the template to a better place
+#    TODO: drop this and move the template to a better place
     paths(PROJECT_DIR, PROJECT_MODULE_NAME, 'static'),
 )
 
@@ -114,6 +114,7 @@ WSGI_APPLICATION = 'fangofmongo.wsgi.application'
 
 TEMPLATE_DIRS = (
     # TODO: drop this and move the template to a better place
+    paths(PROJECT_DIR, PROJECT_MODULE_NAME, 'templates'),
     paths(PROJECT_DIR, PROJECT_MODULE_NAME),
 )
 
@@ -133,6 +134,7 @@ except ImportError:
 INSTALLED_APPS += (
     'fangofmongo.fom',
     'fangofmongo.rest',
+    'fangofmongo.mangoadmin',
 )
 
 

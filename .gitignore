@@ -1,2 +1,4 @@
 #ignore python compiled files
 **/db/*.db
+*_test.html
+google-closure.tar
