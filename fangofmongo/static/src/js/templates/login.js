@@ -12,5 +12,5 @@ goog.require('soy');
  * @notypecheck
  */
 mangoadmin.templates.ui.login.dialog = function(opt_data) {
-  return '<p id="validatetips"><b>MangoAdmin</b> is a dead simple web interface to <a href="http://www.mongodb.org">mongoDB</a>written in <a href="http://www.djangoproject.com/">django</a>.</p><form><fieldset><label>host<input type="text" name="host" value="localhost"></label><label>port<input type="text" name="port" value="27017"></label><label>login<input type="text" name="login" value=""></label><label for="password">password<input type="password" name="password" value=""></label></fieldset></form>';
+  return '<p><b>MangoAdmin</b> is a dead simple web interface to <a href="http://www.mongodb.org">mongoDB</a>written in <a href="http://www.djangoproject.com/">django</a>.</p><form id="login-form"><fieldset><label>host<input type="text" name="host" value="localhost"></label><label>port<input type="text" name="port" value="27017"></label><label>login<input type="text" name="login" value=""></label><label for="password">password<input type="password" name="password" value=""></label></fieldset></form>';
 };
