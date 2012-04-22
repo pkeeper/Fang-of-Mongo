@@ -172,3 +172,17 @@ mangoadmin.DataSource.prototype.load = function(uri) {
  * @private
  */
 mangoadmin.DataSource.cache_ = {};
+
+
+
+
+
+/**
+ * Shortcut for loading a resource
+ *
+ * @param {(string|goog.Uri)} resource  URI for the resource
+ * @param {function(this:mangoadmin.DataSource)} callback
+ */
+mangoadmin.DataSource.load = function(resource, callback) {
+  mangoadmin.DataSource.getInstance().setCallback(callback).load(resource);
+};

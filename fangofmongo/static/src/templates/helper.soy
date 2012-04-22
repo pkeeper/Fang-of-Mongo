@@ -1,5 +1,39 @@
 {namespace mangoadmin.templates.helper}
 
+/**
+ * Renders the top/nav bar
+ */
+{template .topbar}
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="./">
+          MangoAdmin
+        </a>
+        <ul class="nav">
+          <li><a href="#" onclick="mangoadmin.main()">New Server</a></li>
+          <li><a href="#">About</a></li>
+        </ul>
+        <ul class="nav pull-right">
+          <li class="divider-vertical"></li>
+          <li><a>Server info:</a></li>
+          <li><a id="mongodb-info"></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+{/template}
+
+
+/**
+ * Renders the serverinfo
+ * @param version  The mongoDB server verions
+ * @param bits the mongoDb server bits (32 or 64, most likely)
+ */
+{template .serverinfo}
+  [version: {$version}, bits: {$bits}]
+{/template}
+
 
 /**
  * Renders the hero unit
@@ -11,14 +45,10 @@
   {if not $skipHeroUnit}
     <div class="hero-unit">
       {if $header}
-        <h1>{$header}</h1>
-      {else}
-        <h1>{msg desc="The brand name link text as it appears in the hero unit"}Language Trainer{/msg}</h1>
+        <h1>{print $header |noAutoescape}</h1>
       {/if}
       {if $description}
-        <p>{$description}</p>
-      {else}
-        <p>{msg desc="Be a little descriptive about the project"}This is the main input interface...{/msg}</p>
+        <p>{print $description |noAutoescape}</p>
       {/if}
     </div>
   {/if}
@@ -48,7 +78,7 @@
  * Renders the footer content
  */
 {template .footer private="true"}
-  <footer class="footer span12">
+  <footer class="footer row span12">
     <hr>
     <p class="pull-right"><a href="#">
       {msg desc="The text for the -back to top- link"}

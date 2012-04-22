@@ -21,9 +21,9 @@
  */
 goog.provide('mangoadmin');
 
-goog.require('goog.dom');
-goog.require('goog.style');
-goog.require('mangoadmin.login.controller');
+goog.require('mangoadmin.controller');
+goog.require('mangoadmin.templates.main');
+goog.require('mangoadmin.ui.Page');
 
 
 /**
@@ -37,7 +37,9 @@ mangoadmin.VERSION = '0.1.0';
  * Beam me up, Scotty!
  */
 mangoadmin.main = function() {
-  mangoadmin.login.controller.main();
+  mangoadmin.ui.Page.dropInstance();
+  document.body.innerHTML = mangoadmin.templates.main.login();
+  mangoadmin.controller.login();
 };
 
 goog.exportSymbol('mangoadmin.main', mangoadmin.main);

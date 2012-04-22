@@ -10,18 +10,19 @@
   {if not $contentOnly}
     {call mangoadmin.templates.helper.chromeframe /}
     <header id="header">
+      {call mangoadmin.templates.helper.topbar /}
     </header>
-    <div class="container" role="main">
-      <div id="container">
+    <div class="container-fluid" role="main" id="container">
   {/if}
   {if $content}
     {call mangoadmin.templates.helper.herounit data="all" /}
     {print $content |noAutoescape}
   {/if}
   {if not $contentOnly}
-      </div>
-    {call mangoadmin.templates.helper.footer data="all" /}
     </div>
+    <div class="container" role="footer">
+      {call mangoadmin.templates.helper.footer data="all" /}
+    <div>
   {/if}
 {/template}
 
@@ -34,43 +35,53 @@
     {param header}
       <p id="start-app"><a onclick="mangoadmin.main()">Start App</a></p>
     {/param}
-    {param content:'' /}
+    {param content:'<hr />' /}
   {/call}
 {/template}
 
 
 /**
  * Renders the about page
- *
- * @param version  The mongoDB server verions
- * @param bits the mongoDb server bits (32 or 64, most likely)
  */
 {template .ui}
   {call .base data="all"}
     {param skipHeroUnit: true /}
+    {param contentOnly: true /}
     {param content}
-      <div>
-        <span id="brand">MangoAdmin</span>
-        <span>Server info:{sp}</span>
-        <span class="mongodb-info">[version: {$version}, bits: {$bits}]</span>
-        <a href="#" id="about">About MA</a>
-      </div>
-      <div>
-        <span id="mongo_ui_header_tools">
-          <span id="mongo_ui_header_tools_bus"></span>
-          <span id="fom_utils"></span>
-        </span>
-        <div id="mongo_ui_menu"></div>
-        <div id="errors"></div>
-      </div>
-      <div id="mongo_ui_container">
-        <div id='mongo_ui_lists'>
-          <h2>Database</h2>
-          <div id='mongo_ui_database_list'></div>
-          <h2>Collection</h2>
-          <div id='mongo_ui_collection_list'></div>
+      <div class="row-fluid">
+         // sidebar content
+        <div class="span3">
+          <ul class="nav nav-list">
+            <li class="nav-header">
+              Database
+            </li>
+            <li id="databases-list"></li>
+            <li class="nav-header">
+              Collection
+            </li>
+            <li id="collection-list"></li>
+          </ul>
         </div>
+
+        // body content
+        <div class="span9">
+          <div id="collection-content"></div>
+        </div>
+
       </div>
+//        <span id="mongo_ui_header_tools">
+//          <span id="mongo_ui_header_tools_bus"></span>
+//          <span id="fom_utils"></span>
+//        </span>
+//        <div id="mongo_ui_menu"></div>
+//        <div id="errors"></div>
+      </div>
+//      <div id="mongo_ui_container">
+//
+//        <div id="mongo_ui_coll_info"></div>
+//        <div id="mongo_ui_about"></div>
+//        <div id="mongo_ajax"></div>
+//      </div>
     {/param}
   {/call}
 {/template}

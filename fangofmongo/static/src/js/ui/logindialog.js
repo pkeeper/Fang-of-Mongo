@@ -19,21 +19,23 @@
  * @fileoverview
  *
  */
-goog.provide('mangoadmin.login.Ui');
+goog.provide('mangoadmin.ui.LoginDlg');
+
 
 goog.require('goog.ui.Dialog');
 goog.require('goog.ui.Dialog.ButtonSet');
 goog.require('goog.ui.Dialog.EventType');
 goog.require('goog.ui.PopupBase.EventType');
+
 goog.require('mangoadmin.templates.ui.login');
 
-//noinspection JSValidateJSDoc
+
 /**
  * @param {object=} opt_callbacks
  * @extends {goog.ui,Dialog}
  * @constructor
  */
-mangoadmin.login.Ui = function (opt_callbacks) {
+mangoadmin.ui.LoginDlg = function (opt_callbacks) {
   goog.base(this);
 
   this.setContent(mangoadmin.templates.ui.login.dialog());
@@ -65,4 +67,4 @@ mangoadmin.login.Ui = function (opt_callbacks) {
     );
   }
 };
-goog.inherits(mangoadmin.login.Ui, goog.ui.Dialog);
+goog.inherits(mangoadmin.ui.LoginDlg, goog.ui.Dialog);

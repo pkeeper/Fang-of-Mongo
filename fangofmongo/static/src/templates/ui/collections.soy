@@ -1,0 +1,126 @@
+// Copyright 2012 Paul Horn.
+//
+// This file is part of MangoAdmin.
+//
+// MangoAdmin is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// MangoAdmin is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with MangoAdmin.  If not, see <http://www.gnu.org/licenses/gpl.html>.
+{namespace mangoadmin.templates.ui.collections}
+
+/**
+ * Remders the tabbar layout
+ */
+{template .tabbar}
+  <div id="collection-bar" class="goog-tab-bar goog-tab-bar-top">
+    <div class="goog-tab goog-tab-selected">Data</div>
+    <div class="goog-tab">Stats</div>
+    <div class="goog-tab">Indexes</div>
+  </div>
+  // Use goog-tab-bar-clear to separate the tabs from the content.
+  <div class="goog-tab-bar-clear"></div>
+  <div id="collection-bar-content" class="goog-tab-content">
+    Use the keyboard or the mouse to switch tabs.
+  </div>
+{/template}
+
+
+/**
+ * Renders the data tab page
+ * @param results
+ */
+{template .data}
+  <div class="container" style="width:auto;">
+    <div class="pull-right">
+      <span><a href="#" id="result-expand">expand</a></span>{sp}
+      <span><a href="#" id="result-refresh">refresh</a></span>
+    </div>
+    <div class="pagination">
+      <ul>
+        <li><a href="#">&laquo;</a></li>
+        <li class="active">
+          <a href="#">1</a>
+        </li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">&raquo;</a></li>
+      </ul>
+    </div>
+  </div>
+
+  {foreach $result in $results}
+    {if isFirst($result)}
+      <table class="table table-striped">
+          <tbody>
+    {/if}
+            <tr class="result-header">
+              <td>
+                {print $result._id |noAutoescape}
+              </td>
+            </tr>
+            <tr class="result-content">
+              <td>
+                <pre class="pre-scrollable">
+                  {print $result._fmt |noAutoescape}
+                </pre>
+              </td>
+            </tr>
+    {if isLast($result)}
+          </tbody>
+      </table>
+    {/if}
+{/foreach}
+//
+//
+//
+//
+//        <div id="mongo_ui_coll_info_paginator">
+//          <table>
+//            <tbody><tr>
+//              <td class="label">
+//                Per page:
+//              </td>
+//              <td>
+//                <input id="mongo_ui_coll_info_data_limit" type="text" value="10">
+//              </td>
+//              <td class="label">
+//                Page:
+//              </td>
+//              <td>
+//                <input id="mongo_ui_coll_info_data_page" type="text" value="1">
+//                #items: <span id="mongo_ui_coll_info_data_page_count">31</span>
+//              </td>
+//              <td class="label">
+//                Sort:
+//              </td>
+//              <td>
+//                <select id="mongo_ui_coll_info_data_sort_options">
+//                  <option value="">unsorted</option>
+//                  <option value="">custom sort</option>
+//                  <option value="[[&quot;_id&quot;,1]]">_id ASC</option>
+//                  <option value="[[&quot;_id&quot;,-1]]">_id DESC</option>
+//                <option value="[[&quot;dependencies&quot;, 1]]">dependencies ASC</option><option value="[[&quot;dependencies&quot;,-1]]">dependencies DESC</option><option value="[[&quot;name&quot;, 1]]">name ASC</option><option value="[[&quot;name&quot;,-1]]">name DESC</option></select>
+//              </td>
+//              <td>
+//                <input type="text" id="mongo_ui_coll_info_data_sort" value="" style="display: none; ">
+//              </td>
+//            </tr>
+//          </tbody></table>
+//        </div>
+//        <div id="mongo_ui_coll_info_data_area">
+//          <div id="mongo_ui_coll_info_query_builder" class="fom_query_builder"><table><tbody><tr><td>Field</td><td><input type="text" value="" class="fom_query_builder_field_name ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" style="display: inline; "><button tabindex="-1" title="Show all field names" class="ui-button ui-widget ui-state-default ui-button-icon-only ui-corner-right ui-button-icon" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span><span class="ui-button-text">&nbsp;</span></button></td><td><select class="fom_query_builder_field_condition">                                <option value="_ignore">(ignore)</option>                                <option value="$equals">equals</option>                                <option value="$ne">is not equal</option>                                <option value="$exists">exists</option>                                <option value="$nexists">does not exists</option>                                <option value="$gt">greather</option>                                <option value="$gte">greather or equal</option>                                <option value="$lt">lower</option>                                <option value="$lte">lower or equal</option>                                <option value="$in">is any of</option>                                <option value="$nin">is not any of</option>                                <option value="$all">contains all of</option>                                <option value="$size">is of size</option>                                <option value="$type">is of type</option>                                <option value="$re">matches regular expression</option>                                <option value="$elemMatch">matches element</option>                                <option value="$where">matches condition ($where)</option>                            </select></td><td><input type="text" class="fom_query_builder_field_value"></td><td><button title="Add more condition to query">More conditions</button></td></tr></tbody></table></div>
+//          <div id="mongo_ui_coll_info_data_container"><div class="fom_ui_json_data"><div class="fom_ui_json_container"><div class="fom_ui_json_toggle">+</div><div class="fom_ui_json_value_oid"><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb301b")</div></div><div class="fom_ui_json_value_document" style="display: none; "><div class="fom_ui_json_key">"_id"</div><span> : </span><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb301b")</div><br><div class="fom_ui_json_key">"dependencies"</div><span> : </span><div class="fom_ui_json_value_array"><span>[</span><span>]</span></div><br><div class="fom_ui_json_key">"name"</div><span> : </span><div class="fom_ui_json_value_string">"ui.core.js"</div><br></div></div><div class="fom_ui_json_container"><div class="fom_ui_json_toggle">+</div><div class="fom_ui_json_value_oid"><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb301c")</div></div><div class="fom_ui_json_value_document" style="display: none; "><div class="fom_ui_json_key">"_id"</div><span> : </span><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb301c")</div><br><div class="fom_ui_json_key">"dependencies"</div><span> : </span><div class="fom_ui_json_value_array"><span>[</span><span>]</span></div><br><div class="fom_ui_json_key">"name"</div><span> : </span><div class="fom_ui_json_value_string">"ui.widget.js"</div><br></div></div><div class="fom_ui_json_container"><div class="fom_ui_json_toggle">+</div><div class="fom_ui_json_value_oid"><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb301e")</div></div><div class="fom_ui_json_value_document" style="display: none; "><div class="fom_ui_json_key">"_id"</div><span> : </span><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb301e")</div><br><div class="fom_ui_json_key">"dependencies"</div><span> : </span><div class="fom_ui_json_value_array"><span>[</span><span>]</span></div><br><div class="fom_ui_json_key">"name"</div><span> : </span><div class="fom_ui_json_value_string">"ui.position.js"</div><br></div></div><div class="fom_ui_json_container"><div class="fom_ui_json_toggle">+</div><div class="fom_ui_json_value_oid"><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb302c")</div></div><div class="fom_ui_json_value_document" style="display: none; "><div class="fom_ui_json_key">"_id"</div><span> : </span><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb302c")</div><br><div class="fom_ui_json_key">"dependencies"</div><span> : </span><div class="fom_ui_json_value_array"><span>[</span><span>]</span></div><br><div class="fom_ui_json_key">"name"</div><span> : </span><div class="fom_ui_json_value_string">"effects.core.js"</div><br></div></div><div class="fom_ui_json_container"><div class="fom_ui_json_toggle">+</div><div class="fom_ui_json_value_oid"><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb302d")</div></div><div class="fom_ui_json_value_document" style="display: none; "><div class="fom_ui_json_key">"_id"</div><span> : </span><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb302d")</div><br><div class="fom_ui_json_key">"dependencies"</div><span> : </span><div class="fom_ui_json_value_array"><span>[</span><div class="fom_ui_json_value_string">"effects.core.js"</div><span>]</span></div><br><div class="fom_ui_json_key">"name"</div><span> : </span><div class="fom_ui_json_value_string">"effects.blind.js"</div><br></div></div><div class="fom_ui_json_container"><div class="fom_ui_json_toggle">+</div><div class="fom_ui_json_value_oid"><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb302e")</div></div><div class="fom_ui_json_value_document" style="display: none; "><div class="fom_ui_json_key">"_id"</div><span> : </span><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb302e")</div><br><div class="fom_ui_json_key">"dependencies"</div><span> : </span><div class="fom_ui_json_value_array"><span>[</span><div class="fom_ui_json_value_string">"effects.core.js"</div><span>]</span></div><br><div class="fom_ui_json_key">"name"</div><span> : </span><div class="fom_ui_json_value_string">"effects.bounce.js"</div><br></div></div><div class="fom_ui_json_container"><div class="fom_ui_json_toggle">+</div><div class="fom_ui_json_value_oid"><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb302f")</div></div><div class="fom_ui_json_value_document" style="display: none; "><div class="fom_ui_json_key">"_id"</div><span> : </span><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb302f")</div><br><div class="fom_ui_json_key">"dependencies"</div><span> : </span><div class="fom_ui_json_value_array"><span>[</span><div class="fom_ui_json_value_string">"effects.core.js"</div><span>]</span></div><br><div class="fom_ui_json_key">"name"</div><span> : </span><div class="fom_ui_json_value_string">"effects.clip.js"</div><br></div></div><div class="fom_ui_json_container"><div class="fom_ui_json_toggle">+</div><div class="fom_ui_json_value_oid"><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb3030")</div></div><div class="fom_ui_json_value_document" style="display: none; "><div class="fom_ui_json_key">"_id"</div><span> : </span><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb3030")</div><br><div class="fom_ui_json_key">"dependencies"</div><span> : </span><div class="fom_ui_json_value_array"><span>[</span><div class="fom_ui_json_value_string">"effects.core.js"</div><span>]</span></div><br><div class="fom_ui_json_key">"name"</div><span> : </span><div class="fom_ui_json_value_string">"effects.drop.js"</div><br></div></div><div class="fom_ui_json_container"><div class="fom_ui_json_toggle">+</div><div class="fom_ui_json_value_oid"><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb3031")</div></div><div class="fom_ui_json_value_document" style="display: none; "><div class="fom_ui_json_key">"_id"</div><span> : </span><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb3031")</div><br><div class="fom_ui_json_key">"dependencies"</div><span> : </span><div class="fom_ui_json_value_array"><span>[</span><div class="fom_ui_json_value_string">"effects.core.js"</div><span>]</span></div><br><div class="fom_ui_json_key">"name"</div><span> : </span><div class="fom_ui_json_value_string">"effects.explode.js"</div><br></div></div><div class="fom_ui_json_container"><div class="fom_ui_json_toggle">+</div><div class="fom_ui_json_value_oid"><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb3032")</div></div><div class="fom_ui_json_value_document" style="display: none; "><div class="fom_ui_json_key">"_id"</div><span> : </span><div class="fom_ui_json_value_oid">ObjectId("4f899152f764780250bb3032")</div><br><div class="fom_ui_json_key">"dependencies"</div><span> : </span><div class="fom_ui_json_value_array"><span>[</span><div class="fom_ui_json_value_string">"effects.core.js"</div><span>]</span></div><br><div class="fom_ui_json_key">"name"</div><span> : </span><div class="fom_ui_json_value_string">"effects.fade.js"</div><br></div></div></div></div>
+//        </div>
+//      </div>
+//    </div>
+{/template}
+

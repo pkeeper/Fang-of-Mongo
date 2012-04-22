@@ -11,8 +11,28 @@ goog.require('soy');
  * @return {string}
  * @notypecheck
  */
+mangoadmin.templates.helper.topbar = function(opt_data) {
+  return '<div class="navbar navbar-fixed-top"><div class="navbar-inner"><div class="container"><a class="brand" href="./">MangoAdmin</a><ul class="nav"><li><a href="#" onclick="mangoadmin.main()">New Server</a></li><li><a href="#">About</a></li></ul><ul class="nav pull-right"><li class="divider-vertical"></li><li><a>Server info:</a></li><li><a id="mongodb-info"></a></li></ul></div></div></div>';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @return {string}
+ * @notypecheck
+ */
+mangoadmin.templates.helper.serverinfo = function(opt_data) {
+  return '[version: ' + soy.$$escapeHtml(opt_data.version) + ', bits: ' + soy.$$escapeHtml(opt_data.bits) + ']';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @return {string}
+ * @notypecheck
+ */
 mangoadmin.templates.helper.herounit = function(opt_data) {
-  return (! opt_data.skipHeroUnit) ? '<div class="hero-unit">' + ((opt_data.header) ? '<h1>' + soy.$$escapeHtml(opt_data.header) + '</h1>' : '<h1>Language Trainer</h1>') + ((opt_data.description) ? '<p>' + soy.$$escapeHtml(opt_data.description) + '</p>' : '<p>This is the main input interface...</p>') + '</div>' : '';
+  return (! opt_data.skipHeroUnit) ? '<div class="hero-unit">' + ((opt_data.header) ? '<h1>' + opt_data.header + '</h1>' : '') + ((opt_data.description) ? '<p>' + opt_data.description + '</p>' : '') + '</div>' : '';
 };
 
 
@@ -32,7 +52,7 @@ mangoadmin.templates.helper.chromeframe = function(opt_data) {
  * @notypecheck
  */
 mangoadmin.templates.helper.footer = function(opt_data) {
-  return '<footer class="footer span12"><hr><p class="pull-right"><a href="#">Back to top</a></p>' + mangoadmin.templates.helper.credits(null) + '</footer>';
+  return '<footer class="footer row span12"><hr><p class="pull-right"><a href="#">Back to top</a></p>' + mangoadmin.templates.helper.credits(null) + '</footer>';
 };
 
 

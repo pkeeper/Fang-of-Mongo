@@ -39,6 +39,9 @@ class MongoCollectionHandler(GenericMongoHandler):
                 else:
                     query[key] = request.GET.get(key)
 
+        if 'limit' not in query:
+            query['limit'] = 10
+
         return query
 
 

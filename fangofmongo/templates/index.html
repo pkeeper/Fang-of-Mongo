@@ -20,9 +20,36 @@
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
 
+{#  <link href="{{ STATIC_URL }}css/fom.css" rel="stylesheet">#}
   <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
+  <style>
+    body {
+      padding-top: 60px;
+    }
+    .goog-jsonprettyprinter-propertyname {
+      color: #F00;
+    }
+
+    .goog-jsonprettyprinter-propertyvalue-string {
+      color: #00F;
+    }
+
+    .goog-jsonprettyprinter-propertyvalue-number {
+      color: #0F0;
+    }
+
+    .goog-jsonprettyprinter-propertyvalue-boolean {
+      color: #0F0;
+    }
+
+    .goog-jsonprettyprinter-propertyvalue-null {
+      color: orange;
+    }
+  </style>
+
   <link href="{{ STATIC_URL }}css/dialog.css" rel="stylesheet">
   <link href="{{ STATIC_URL }}css/combobox.css" rel="stylesheet">
+  <link href="{{ STATIC_URL }}css/tabbar.css" rel="stylesheet">
 
   <script src="{{ STATIC_URL }}js/goog/base.js"></script>
   <script src="{{ STATIC_URL }}src/deps.js"></script>
@@ -32,16 +59,16 @@
   </script>
 </head>
 <body data-apiurl="{{ api }}">
-<!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
-chromium.org/developers/how-tos/chrome-frame-getting-started -->
-<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
-<header id="header"></header>
-<div class="container" role="main">
-  <div id="container">
-    <p id="start-app"><a onclick="mangoadmin.main()">Start App</a></p>
-  </div>
-</div>
-<footer class="footer"></footer>
+{#<!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.#}
+{#chromium.org/developers/how-tos/chrome-frame-getting-started -->#}
+{#<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->#}
+{#<header id="header"></header>#}
+{#<div class="container" role="main">#}
+{#  <div id="container">#}
+{#    <p id="start-app"><a onclick="mangoadmin.main()">Start App</a></p>#}
+{#  </div>#}
+{#</div>#}
+{#<footer class="footer"></footer>#}
 
 <script>
   mangoadmin.main();

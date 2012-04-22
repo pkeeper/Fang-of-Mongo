@@ -13,7 +13,7 @@ goog.require('mangoadmin.templates.helper');
  * @notypecheck
  */
 mangoadmin.templates.main.base = function(opt_data) {
-  return ((! opt_data.contentOnly) ? '<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em><a href="http://browsehappy.com/">Upgrade to a different browser</a> or<a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a>to experience this site.</p><![endif]--><header id="header"></header><div class="container" role="main"><div id="container">' : '') + ((opt_data.content) ? mangoadmin.templates.helper.herounit(opt_data) + opt_data.content : '') + ((! opt_data.contentOnly) ? '</div>' + mangoadmin.templates.helper.footer(opt_data) + '</div>' : '');
+  return ((! opt_data.contentOnly) ? '<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em><a href="http://browsehappy.com/">Upgrade to a different browser</a> or<a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a>to experience this site.</p><![endif]--><header id="header">' + mangoadmin.templates.helper.topbar(null) + '</header><div class="container-fluid" role="main" id="container">' : '') + ((opt_data.content) ? mangoadmin.templates.helper.herounit(opt_data) + opt_data.content : '') + ((! opt_data.contentOnly) ? '</div><div class="container" role="footer">' + mangoadmin.templates.helper.footer(opt_data) + '<div>' : '');
 };
 
 
@@ -23,7 +23,7 @@ mangoadmin.templates.main.base = function(opt_data) {
  * @notypecheck
  */
 mangoadmin.templates.main.login = function(opt_data) {
-  return mangoadmin.templates.main.base(soy.$$augmentData(opt_data, {header: '<p id="start-app"><a onclick="mangoadmin.main()">Start App</a></p>', content: ''}));
+  return mangoadmin.templates.main.base(soy.$$augmentData(opt_data, {header: '<p id="start-app"><a onclick="mangoadmin.main()">Start App</a></p>', content: '<hr />'}));
 };
 
 
@@ -33,5 +33,5 @@ mangoadmin.templates.main.login = function(opt_data) {
  * @notypecheck
  */
 mangoadmin.templates.main.ui = function(opt_data) {
-  return mangoadmin.templates.main.base(soy.$$augmentData(opt_data, {skipHeroUnit: true, content: '<div><span id="brand">MangoAdmin</span><span>Server info: </span><span class="mongodb-info">[version: ' + soy.$$escapeHtml(opt_data.version) + ', bits: ' + soy.$$escapeHtml(opt_data.bits) + ']</span><a href="#" id="about">About MA</a></div><div><span id="mongo_ui_header_tools"><span id="mongo_ui_header_tools_bus"></span><span id="fom_utils"></span></span><div id="mongo_ui_menu"></div><div id="errors"></div></div><div id="mongo_ui_container"><div id=\'mongo_ui_lists\'><h2>Database</h2><div id=\'mongo_ui_database_list\'></div><h2>Collection</h2><div id=\'mongo_ui_collection_list\'></div></div></div>'}));
+  return mangoadmin.templates.main.base(soy.$$augmentData(opt_data, {skipHeroUnit: true, contentOnly: true, content: '<div class="row-fluid"><div class="span3"><ul class="nav nav-list"><li class="nav-header">Database</li><li id="databases-list"></li><li class="nav-header">Collection</li><li id="collection-list"></li></ul></div><div class="span9"><div id="collection-content"></div></div></div></div>'}));
 };

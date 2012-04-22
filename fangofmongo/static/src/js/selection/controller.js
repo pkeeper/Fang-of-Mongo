@@ -19,59 +19,63 @@
  * @fileoverview
  *
  */
-goog.provide('mangoadmin.collections.Controller');
+goog.provide('mangoadmin.selection.Controller');
 
-goog.require('goog.dom');
+goog.require('goog.array');
+goog.require('goog.string');
+goog.require('goog.object');
 goog.require('goog.ui.ComboBox');
-goog.require('goog.ui.MenuSeparator');
 goog.require('goog.ui.Component.EventType');
-goog.require('mangoadmin.ui.Page');
+goog.require('goog.ui.MenuSeparator');
+
+goog.require('mangoadmin.DataSource');
 goog.require('mangoadmin.ui.CollectionItem');
-goog.require('mangoadmin.templates.main');
+goog.require('mangoadmin.ui.Page');
 
 
 
-mangoadmin.collections.Controller = function(server) {
+mangoadmin.selection.Controller = function(server) {
   this.page_ = mangoadmin.ui.Page.getInstance(server);
   this.server_ = server;
 };
 
-mangoadmin.collections.Controller.prototype.list = function() {
+mangoadmin.selection.Controller.prototype.list = function(specs) {
   var cb = new goog.ui.ComboBox();
   cb.setUseDropdownArrow(true);
-  cb.setDefaultText(
-      goog.getMsg('Select a collection...')
-  );
+  cb.setDefaultText(specs.default_text);
 
-  var caption = new mangoadmin.ui.CollectionItem(
-      goog.getMsg('Select collection...')
-  );
+  var caption = new mangoadmin.ui.CollectionItem(specs.caption_text);
   caption.setSticky(true);
   caption.setEnabled(false);
 
   cb.addItem(caption);
 
-  goog.array.forEach(this.server_['database']['collections'], function(val) {
-    cb.addItem(new mangoadmin.ui.CollectionItem(val.name, val));
-  });
+  var content = goog.getObjectByName(specs.server_item, this.server_);
+  if (goog.isArrayLike(content)) {
+    goog.array.forEach(content, function(val) {
+      cb.addItem(new mangoadmin.ui.CollectionItem(val.name, val));
+    });
+  }
 
   cb.addItem(new goog.ui.MenuSeparator());
 
-  var newfolder = new mangoadmin.ui.CollectionItem('New collection...');
+  var newfolder = new mangoadmin.ui.CollectionItem(specs.new_text);
   newfolder.setSticky(true);
   cb.addItem(newfolder);
 
-  var el = this.page_.getDomHelper().getElement('mongo_ui_collection_list');
-  goog.dom.removeChildren(el);
-  cb.render(el);
-
   cb.getHandler().listen(cb, goog.ui.Component.EventType.CHECK,
-      this.collection_
+      goog.bind(this.select_, cb, specs.select)
   );
+
+  var idKey = goog.string.hashCode(goog.object.getValues(specs).join(''));
+  this.page_.safeAddChild(idKey, cb);
+
+  var el = this.page_.getDomHelper().getElement(specs.render_to);
+  cb.render(el);
 };
 
 
-mangoadmin.collections.Controller.prototype.collection_ = function(e) {
+mangoadmin.selection.Controller.prototype.select_ = function(callback, e) {
   var data = e.target.getValue(),
       child_data;
   this.getMenu().forEachChild(function(child) {
@@ -83,9 +87,6 @@ mangoadmin.collections.Controller.prototype.collection_ = function(e) {
   });
   console.log('you chose: ', data);
   if (data['resource']) {
-    mangoadmin.DataSource.getInstance().setCallback(function(resp){
-      console.log('loaded collection', resp);
-
-    }).load(data['resource']);
+    mangoadmin.DataSource.load(data['resource'], callback);
   }
 };
