@@ -24,6 +24,7 @@ goog.provide('mangoadmin.login.controller');
 
 goog.require('goog.dom');
 goog.require('goog.dom.forms');
+goog.require('goog.Uri');
 goog.require('mangoadmin.DataSource');
 goog.require('mangoadmin.databases.Controller');
 goog.require('mangoadmin.login.Ui');
@@ -47,13 +48,17 @@ mangoadmin.login.controller.main = function() {
 };
 
 mangoadmin.login.controller.load = function() {
-  //TODO: get URL from somewhere
-  var formMap = goog.dom.forms.getFormDataMap(goog.dom.getElement('login-form'));
-  //noinspection JSValidateTypes
-  mangoadmin.DataSource.getInstance().setCallback(function(resp){
-    console.log('loaded server', resp['server']);
-    (new mangoadmin.databases.Controller(resp['server'])).list();
-  }).load(
-      '/api/' + formMap.get('host') + ':' + formMap.get('port') + '.json'
-  );
+  var apiurl;
+  if (goog.isDefAndNotNull(apiurl = goog.getObjectByName('document.body.dataset.apiurl'))) {
+    var formMap = goog.dom.forms.getFormDataMap(goog.dom.getElement('login-form')),
+        loader = function (resp) {
+          console.log('loaded server', resp['server']);
+          (new mangoadmin.databases.Controller(resp['server'])).list();
+        };
+    mangoadmin.DataSource.getInstance().setCallback(loader).load(new goog.Uri(
+        apiurl.replace("host:0", "{$host}:{$port}")
+            .replace('{$host}', formMap.get('host'))
+            .replace('{$port}', formMap.get('port'))
+    ));
+  }
 };
