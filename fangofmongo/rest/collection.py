@@ -35,9 +35,7 @@ class MongoCollectionHandler(GenericMongoHandler):
             if key in params:
                 coercer = params[key]
                 if coercer is not None:
-#                    query[key] = coercer(to_bytes(request.GET.get(key)).replace("'", '"'))
                     query[key] = coercer(to_bytes(request.GET.get(key)))
-#                    query[key] = coercer(request.GET.get(key).replace("'", '"'))
                 else:
                     query[key] = request.GET.get(key)
 
@@ -72,22 +70,24 @@ class MongoCollectionHandler(GenericMongoHandler):
         qry = to_bytes(qry)
         qry = json_urlencode(qry)
 
-        result = self.get_serverinfo()
-        result['database'] = {
-            'name': db,
-            'resource': self.get_url('show-database', db=db),
-            }
-        result['database']['collection'] = {
-            'name': collection,
-            'resource': self.get_url('show-collection', db=db, collection=collection)
-        }
-        result['query'] = {
-            'resource': (self.get_url('show-collection', db=db, collection=collection) + '?' + qry).rstrip('?'),
-            'spec': query,
-            'result': qry_result
-        }
 
 
+        result = {
+            'server': dict(self.get_serverinfo(), **{
+                'database': {
+                    'name': db,
+                    'resource': self.get_url('show-database', db=db),
+                    'collection' : {
+                        'name': collection,
+                        'resource': self.get_url('show-collection', db=db, collection=collection)
+                    }
+                },
+            }),
+            'query': {
+                'resource': (self.get_url('show-collection', db=db, collection=collection) + '?' + qry).rstrip('?'),
+                'spec': query,
+                'result': qry_result
+            },
+        }
 
         return result
-

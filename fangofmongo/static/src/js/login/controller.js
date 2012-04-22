@@ -22,10 +22,11 @@
 goog.provide('mangoadmin.login.controller');
 
 
-goog.require('mangoadmin.login.Ui');
 goog.require('goog.dom');
 goog.require('goog.dom.forms');
 goog.require('mangoadmin.DataSource');
+goog.require('mangoadmin.databases.Controller');
+goog.require('mangoadmin.login.Ui');
 
 mangoadmin.login.controller.main = function() {
   var start_app = goog.dom.getElement('start-app'),
@@ -50,7 +51,8 @@ mangoadmin.login.controller.load = function() {
   var formMap = goog.dom.forms.getFormDataMap(goog.dom.getElement('login-form'));
   //noinspection JSValidateTypes
   mangoadmin.DataSource.getInstance().setCallback(function(resp){
-    console.log(resp);
+    console.log('loaded server', resp['server']);
+    (new mangoadmin.databases.Controller(resp['server'])).list();
   }).load(
       '/api/' + formMap.get('host') + ':' + formMap.get('port') + '.json'
   );

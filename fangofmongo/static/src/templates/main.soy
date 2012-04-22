@@ -1,0 +1,76 @@
+{namespace mangoadmin.templates.main}
+
+/**
+ * Renders the main page
+ *
+ * @param? content  The content of this site
+ * @param? contentOnly  Whether to display the whole site or just the content part
+ */
+{template .base}
+  {if not $contentOnly}
+    {call mangoadmin.templates.helper.chromeframe /}
+    <header id="header">
+    </header>
+    <div class="container" role="main">
+      <div id="container">
+  {/if}
+  {if $content}
+    {call mangoadmin.templates.helper.herounit data="all" /}
+    {print $content |noAutoescape}
+  {/if}
+  {if not $contentOnly}
+      </div>
+    {call mangoadmin.templates.helper.footer data="all" /}
+    </div>
+  {/if}
+{/template}
+
+
+/**
+ * Renders the main page
+ */
+{template .login}
+  {call .base data="all"}
+    {param header}
+      <p id="start-app"><a onclick="mangoadmin.main()">Start App</a></p>
+    {/param}
+    {param content:'' /}
+  {/call}
+{/template}
+
+
+/**
+ * Renders the about page
+ *
+ * @param version  The mongoDB server verions
+ * @param bits the mongoDb server bits (32 or 64, most likely)
+ */
+{template .ui}
+  {call .base data="all"}
+    {param skipHeroUnit: true /}
+    {param content}
+      <div>
+        <span id="brand">MangoAdmin</span>
+        <span>Server info:{sp}</span>
+        <span class="mongodb-info">[version: {$version}, bits: {$bits}]</span>
+        <a href="#" id="about">About MA</a>
+      </div>
+      <div>
+        <span id="mongo_ui_header_tools">
+          <span id="mongo_ui_header_tools_bus"></span>
+          <span id="fom_utils"></span>
+        </span>
+        <div id="mongo_ui_menu"></div>
+        <div id="errors"></div>
+      </div>
+      <div id="mongo_ui_container">
+        <div id='mongo_ui_lists'>
+          <h2>Database</h2>
+          <div id='mongo_ui_database_list'></div>
+          <h2>Collection</h2>
+          <div id='mongo_ui_collection_list'></div>
+        </div>
+      </div>
+    {/param}
+  {/call}
+{/template}

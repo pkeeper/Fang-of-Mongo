@@ -3,6 +3,15 @@ goog.addDependency("../soy/soyutils_usegoog.js", ['soy', 'soy.StringBuilder', 's
 goog.addDependency("../soy/soyutils.js", [], []);
 goog.addDependency("../../src/js/mangoadmin.js", ['mangoadmin'], ['goog.dom', 'goog.style', 'mangoadmin.login.controller']);
 goog.addDependency("../../src/js/datasource.js", ['mangoadmin.DataSource'], ['goog.net.XhrIo', 'goog.net.EventType', 'goog.events', 'goog.net.XhrIo']);
+goog.addDependency("../../src/js/ui/collectionitem.js", ['mangoadmin.ui.CollectionItem'], ['goog.ui.ComboBoxItem', 'goog.ui.Component.State']);
+goog.addDependency("../../src/js/ui/pagerenderer.js", ['mangoadmin.ui.PageRenderer'], ['goog.debug.Logger', 'goog.ui.ControlRenderer']);
+goog.addDependency("../../src/js/ui/page.js", ['mangoadmin.ui.Page'], ['goog.debug.Logger', 'goog.dom', 'goog.ui.Component.State', 'goog.ui.Control', 'goog.ui.registry', 'mangoadmin.ui.PageRenderer']);
+goog.addDependency("../../src/js/templates/helper.js", ['mangoadmin.templates.helper'], ['soy']);
+goog.addDependency("../../src/js/templates/main.js", ['mangoadmin.templates.main'], ['soy', 'mangoadmin.templates.helper']);
 goog.addDependency("../../src/js/templates/login.js", ['mangoadmin.templates.ui.login'], ['soy']);
-goog.addDependency("../../src/js/login/controller.js", ['mangoadmin.login.controller'], ['mangoadmin.login.Ui', 'goog.dom', 'goog.dom.forms', 'mangoadmin.DataSource']);
+goog.addDependency("../../src/js/collections/controller.js", ['mangoadmin.collections.Controller'], ['goog.dom', 'goog.ui.ComboBox', 'goog.ui.MenuSeparator', 'goog.ui.Component.EventType', 'mangoadmin.ui.Page', 'mangoadmin.ui.CollectionItem', 'mangoadmin.templates.main']);
+goog.addDependency("../../src/js/collections/ui.js", [], []);
+goog.addDependency("../../src/js/databases/controller.js", ['mangoadmin.databases.Controller'], ['goog.dom', 'goog.ui.ComboBox', 'goog.ui.MenuSeparator', 'goog.ui.Component.EventType', 'mangoadmin.ui.Page', 'mangoadmin.ui.CollectionItem', 'mangoadmin.collections.Controller', 'mangoadmin.templates.main']);
+goog.addDependency("../../src/js/databases/ui.js", [], []);
+goog.addDependency("../../src/js/login/controller.js", ['mangoadmin.login.controller'], ['goog.dom', 'goog.dom.forms', 'mangoadmin.DataSource', 'mangoadmin.databases.Controller', 'mangoadmin.login.Ui']);
 goog.addDependency("../../src/js/login/ui.js", ['mangoadmin.login.Ui'], ['goog.ui.Dialog', 'goog.ui.Dialog.ButtonSet', 'goog.ui.Dialog.EventType', 'goog.ui.PopupBase.EventType', 'mangoadmin.templates.ui.login']);

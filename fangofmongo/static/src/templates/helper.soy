@@ -1,0 +1,71 @@
+{namespace mangoadmin.templates.helper}
+
+
+/**
+ * Renders the hero unit
+ * @param? header  The Header, usually the brand name
+ * @param? description  A descriptive Text
+ * @param? skipHeroUnit  Whether to display the unit in the first place
+ */
+{template .herounit private="true"}
+  {if not $skipHeroUnit}
+    <div class="hero-unit">
+      {if $header}
+        <h1>{$header}</h1>
+      {else}
+        <h1>{msg desc="The brand name link text as it appears in the hero unit"}Language Trainer{/msg}</h1>
+      {/if}
+      {if $description}
+        <p>{$description}</p>
+      {else}
+        <p>{msg desc="Be a little descriptive about the project"}This is the main input interface...{/msg}</p>
+      {/if}
+    </div>
+  {/if}
+{/template}
+
+
+/**
+ * Renders a message for users of oldIE to either upgrade or use chrome frame
+ */
+{template .chromeframe private="true"}
+  <!--[if lt IE 7]>
+    <p class=chromeframe>
+      {msg desc="Tell the user, that his browser is too old."}
+        Your browser is <em>ancient!</em>
+        <a href="http://browsehappy.com/">Upgrade to a different browser</a> or
+        <a href="http://www.google.com/chromeframe/?redirect=true">
+          install Google Chrome Frame
+        </a>
+        to experience this site.
+      {/msg}
+    </p>
+  <![endif]-->
+{/template}
+
+
+/**
+ * Renders the footer content
+ */
+{template .footer private="true"}
+  <footer class="footer span12">
+    <hr>
+    <p class="pull-right"><a href="#">
+      {msg desc="The text for the -back to top- link"}
+        Back to top
+      {/msg}
+    </a></p>
+    {call .credits /}
+  </footer>
+{/template}
+
+
+/**
+ * Renders the credit text
+ */
+{template .credits private="true"}
+  {msg desc="The credit text, a lot of background information"}
+    <p>Designed and built with ★ and ♥ by <a href="http://twitter.com/knutwalker" target="_blank">@knutwalker</a> upon the awesome <a href="http://html5boilerplate.com/" target="_blank">h5bp</a>, <a href="http://twitter.github.com/bootstrap/" target="_blank">bootstrap</a> and <a href="http://code.google.com/closure/" target="_blank">Closure tools</a>.</p>
+    <p>Hosted on <a href="http://github.com/" target="_blank">github</a>. Icons from <a target="_blank" href="http://glyphicons.com">Glyphicons Free</a>, licensed under <a target="_blank" href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+  {/msg}
+{/template}

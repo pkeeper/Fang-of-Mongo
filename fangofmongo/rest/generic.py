@@ -53,18 +53,35 @@ class GenericMongoHandler(AnonymousBaseHandler):
 
         self.kwargs = {}
 
-    def get_serverinfo(self):
+        self.__server_info = None
 
-        host = self.kwargs.get('host', self.host)
-        port = int(self.kwargs.get('port', self.port))
+    def get_serverinfo(self, only_conn_params=False):
+        if self.__server_info is None:
+            host = self.kwargs.get('host', self.host)
+            port = int(self.kwargs.get('port', self.port))
 
-        return {
-            'host': host,
-            'port': port
-        }
+            try:
+                connection = pymongo.Connection(host=host, port=port)
+                build_info = connection['admin'].command({"buildinfo": 1})
+            except PyMongoError:
+                raise MongoHandlerError(self.INTERNAL_ERROR)
+            connection.close()
+
+            self.__server_info = {
+                'host': host,
+                'port': port,
+                'buildinfo': build_info,
+            }
+
+        if only_conn_params:
+            return {
+                'host': self.__server_info['host'],
+                'port': self.__server_info['port'],
+            }
+        return self.__server_info
 
     def get_url(self, name, *args, **kwargs):
-        kws = dict(self.get_serverinfo(),
+        kws = dict(self.get_serverinfo(True),
                    emitter_format=self.kwargs.get('emitter_format'))
 
         for arg in args:
@@ -79,7 +96,7 @@ class GenericMongoHandler(AnonymousBaseHandler):
     def get_mongo(self, db=None, collection=None, create_db=False, create_collection=False):
 
         try:
-            connection = pymongo.Connection(**self.get_serverinfo())
+            connection = pymongo.Connection(**self.get_serverinfo(True))
         except PyMongoError:
             raise MongoHandlerError(self.INTERNAL_ERROR)
 
