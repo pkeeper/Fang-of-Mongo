@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils import simplejson as json
 
 import re
@@ -69,6 +70,7 @@ def fix_json_input(json_obj):
 
 
 #login view
+@ensure_csrf_cookie
 def start_page(request):
     """
         place to enter database credentials
@@ -77,6 +79,7 @@ def start_page(request):
 
 #login view
 #@auth_required
+@ensure_csrf_cookie
 def ui_page(request, host, port):
     """
         mongo user interface
