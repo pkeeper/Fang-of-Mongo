@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'fangofmongo/base.html' %}
 
 {% block js %}
 {{ block.super }}
@@ -58,7 +58,7 @@
     <h2>Collection</h2>
     <div id='mongo_ui_collection_list'></div>
   </div>
- {% include 'mongo_collection.html' %}
- {% include 'fom_about.html' %}
+ {% include 'fangofmongo/mongo_collection.html' %}
+ {% include 'fangofmongo/fom_about.html' %}
 </div>
 {% endblock content %}

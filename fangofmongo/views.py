@@ -73,7 +73,7 @@ def start_page(request):
     """
         place to enter database credentials
     """
-    return render_to_response('fom/templates/start_page.html', {})
+    return render_to_response('fangofmongo/start_page.html', {})
 
 #login view
 #@auth_required
@@ -83,7 +83,7 @@ def ui_page(request, host, port):
     """
     build_info = {}
     try:
-        conn = pymongo.Connection(host = host, port = int(port))
+        conn = pymongo.Connection(host=host, port=int(port))
         build_info = conn['admin'].command({"buildinfo": 1})
     #except:
     #    pass
@@ -91,7 +91,7 @@ def ui_page(request, host, port):
         conn.disconnect()
 
 
-    return render_to_response('fom/templates/mongo_ui_page.html',
+    return render_to_response('fangofmongo/mongo_ui_page.html',
             {
               'connection_params' : { 'host' : host, 'port' : port, 'db' : None, 'coll' : None },
               'build_info' : build_info,
@@ -110,11 +110,11 @@ def list_databases(request, host, port):
     """
 
     try:
-        conn = pymongo.Connection(host = host, port = int(port))
+        conn = pymongo.Connection(host=host, port=int(port))
         dbnames = conn.database_names()
         if request.GET:
             if 'search' in request.GET:
-                if request.GET.get('method','') =='re':
+                if request.GET.get('method', '') == 're':
                     dbnames = [dbname for dbname in dbnames if re.match(request.GET['search'], dbname, re.IGNORECASE)]
                 else:
                     dbnames = [dbname for dbname in dbnames if request.GET['search'].lower() in dbname.lower()]
@@ -124,7 +124,7 @@ def list_databases(request, host, port):
         json_response = (json.dumps({'error': repr(e)}))
     finally:
         conn.disconnect()
-       
+
     return HttpResponse(json_response, mimetype='application/json')
 
 #@auth_required
@@ -137,12 +137,12 @@ def list_collections(request, host, port, dbname):
     Return list of databases matching given criteria 
     """
     try:
-        conn = pymongo.Connection(host = host, port = int(port))
+        conn = pymongo.Connection(host=host, port=int(port))
         db = conn[dbname]
         collnames = db.collection_names()
         if request.GET:
             if 'search' in request.GET:
-                if request.GET.get('method','') =='re':
+                if request.GET.get('method', '') == 're':
                     collnames = [collname for collname in collnames if re.match(request.GET['search'], collname, re.IGNORECASE)]
                 else:
                     collnames = [collname for collname in collnames if request.GET['search'].lower() in collname.lower()]
@@ -166,15 +166,15 @@ def db_stats(request, host, port, dbname):
     Return json with database stats,as returned by mongo (db.stats())
     """
     try:
-        conn = pymongo.Connection(host = host, port = int(port))
+        conn = pymongo.Connection(host=host, port=int(port))
         db = conn[dbname]
         resp = db.command({'dbstats': 1})
-        json_response = json.dumps({'data':resp},default=json_util.default)
+        json_response = json.dumps({'data':resp}, default=json_util.default)
     except (Exception), e:
         json_response = json.dumps({'error': repr(e)})
     finally:
         conn.disconnect()
-        
+
     return HttpResponse(json_response, mimetype='application/json')
 
 
@@ -186,16 +186,16 @@ def coll_indexes(request, host, port, dbname, collname):
     Return information about collection indexes
     """
     try:
-        conn = pymongo.Connection(host = host, port = int(port))
+        conn = pymongo.Connection(host=host, port=int(port))
         db = conn[dbname]
         coll = db[collname];
         resp = coll.index_information()
-        json_response = json.dumps({'data':resp},default=json_util.default)
+        json_response = json.dumps({'data':resp}, default=json_util.default)
     except (Exception), e:
         json_response = json.dumps({'error': repr(e)})
     finally:
         conn.disconnect()
-        
+
     resp = HttpResponse(json_response, mimetype='application/json')
     resp['Cache-Control'] = 'no-cache'
     return resp
@@ -210,7 +210,7 @@ def coll_stats(request, host, port, dbname, collname):
     Return json with basic collection info
     """
     try:
-        conn = pymongo.Connection(host = host, port = int(port))
+        conn = pymongo.Connection(host=host, port=int(port))
         db = conn[dbname]
         resp = db.command({'collstats':collname})
         #coll = db[collname];
@@ -218,12 +218,12 @@ def coll_stats(request, host, port, dbname, collname):
         #resp['count'] = coll.count();
         #resp['indexes'] = coll.index_information()
         #resp['options'] = coll.options()
-        json_response = json.dumps({'data':resp},default=json_util.default)
+        json_response = json.dumps({'data':resp}, default=json_util.default)
     except (Exception), e:
         json_response = json.dumps({'error': repr(e)})
     finally:
         conn.disconnect()
-        
+
     resp = HttpResponse(json_response, mimetype='application/json')
     resp['Cache-Control'] = 'no-cache'
     return resp
@@ -240,18 +240,18 @@ def db_run_command(request, host, port, dbname):
     Excute command again given database.
     """
     try:
-        conn = pymongo.Connection(host = host, port = int(port))
+        conn = pymongo.Connection(host=host, port=int(port))
         db = conn[dbname]
         cmd = json.loads(request.GET['cmd'], object_hook=json_util.object_hook)
         resp = db.command(cmd)
-        json_response = json.dumps({'data':resp},default=json_util.default)
+        json_response = json.dumps({'data':resp}, default=json_util.default)
     except (Exception), e:
         json_response = json.dumps({'error': repr(e)})
         import traceback
         traceback.print_stack()
     finally:
         conn.disconnect()
-        
+
     resp = HttpResponse(json_response, mimetype='application/json')
     resp['Cache-Control'] = 'no-cache'
     return resp
@@ -271,7 +271,7 @@ def coll_query(request, host, port, dbname, collname):
     Return json with requested data or error
     """
     try:
-        conn = pymongo.Connection(host = host, port = int(port))
+        conn = pymongo.Connection(host=host, port=int(port))
         db = conn[dbname]
         coll = db[collname];
         resp = {}
@@ -285,7 +285,7 @@ def coll_query(request, host, port, dbname, collname):
             skip = int(request.GET['skip'])
         if 'sort' in request.GET:
             sort = json.loads(request.GET['sort'])
-        cur = coll.find(query, skip = skip, limit = limit)
+        cur = coll.find(query, skip=skip, limit=limit)
         cnt = cur.count()
         if sort:
             cur = cur.sort(sort)
@@ -299,8 +299,8 @@ def coll_query(request, host, port, dbname, collname):
         json_response = json.dumps({'error': repr(e)})
     finally:
         conn.disconnect()
-        
-    resp = HttpResponse(json_response, mimetype='application/json' )
+
+    resp = HttpResponse(json_response, mimetype='application/json')
     resp['Cache-Control'] = 'no-cache'
     return resp
 
@@ -313,7 +313,7 @@ def cmd(request, host, port):
     Return json with requested data or error
     """
     try:
-        conn = pymongo.Connection(host = host, port = int(port))
+        conn = pymongo.Connection(host=host, port=int(port))
         cmd = request.POST['cmd']
         if cmd == 'create_database':
             db = conn[request.POST['database_name']]
@@ -335,8 +335,8 @@ def cmd(request, host, port):
         json_response = json.dumps({'error': repr(e)})
     finally:
         conn.disconnect()
-        
-    resp = HttpResponse(json_response, mimetype='application/json' )
+
+    resp = HttpResponse(json_response, mimetype='application/json')
     resp['Cache-Control'] = 'no-cache'
     return resp
 
@@ -348,12 +348,12 @@ def save_document(request, host, port, dbname, collname):
     Return document _id or error
     """
     try:
-        conn = pymongo.Connection(host = host, port = int(port))
+        conn = pymongo.Connection(host=host, port=int(port))
         db = conn[dbname]
         coll = db[collname];
         resp = {}
         document = fix_json_input(json.loads(request.POST['document'], object_hook=json_util.object_hook))
-        _id =  coll.save(document)
+        _id = coll.save(document)
         json_response = json.dumps({'_id':_id}, default=json_util.default)
     except (Exception), e:
         json_response = json.dumps({'error': repr(e)})
@@ -361,7 +361,7 @@ def save_document(request, host, port, dbname, collname):
         traceback.print_stack()
     finally:
         conn.disconnect()
-        
+
     return HttpResponse(json_response, mimetype='application/json')
 
 
@@ -379,8 +379,8 @@ def exec_cmd(request):
             raise CmdException('No command given')
         cmd = request.POST['cmd']
         if cmd == 'help':
-            json_response = json.dumps({'data': 'some help', 'type' : 'html'},  default=json_util.default)
-        
+            json_response = json.dumps({'data': 'some help', 'type' : 'html'}, default=json_util.default)
+
     except (CmdException,), e:
         json_response = json.dumps({'error': e.message})
     except (Exception), e:

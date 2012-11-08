@@ -657,7 +657,7 @@ Fom_mongo_ajax = $.extend({}, $.ui.fom_object.prototype, {
 
         /*  //this is intended to be use for console plugin
         exec_cmd: function(console_obj, cmd){
-            var url = '/fangofmongo/rest/mongo/cmd/';
+            var url = '/mongoadmin/rest/mongo/cmd/';
             var caller_id = console_obj;
             var my_console = this;
 
@@ -672,7 +672,7 @@ Fom_mongo_ajax = $.extend({}, $.ui.fom_object.prototype, {
          *      command: Object with command to perform
          */
         run_command: function(database, command, callback){
-            var url = '/fangofmongo/rest/mongo/' + encodeURIComponent(this.options['host']) + '/' + encodeURIComponent(this.options['port']) + '/';
+            var url = '/mongoadmin/rest/mongo/' + encodeURIComponent(this.options['host']) + '/' + encodeURIComponent(this.options['port']) + '/';
             url += 'database/' + encodeURIComponent(database) + '/cmd/'
             $.getJSON( url,
                 {cmd:JSON.stringify(command)},
@@ -751,7 +751,7 @@ Fom_mongo_ajax = $.extend({}, $.ui.fom_object.prototype, {
                 context
         */
         save_document: function(options) {
-            var url = '/fangofmongo/rest/mongo/' + this.options['host'] + '/' + this.options['port'] + '/';
+            var url = '/mongoadmin/rest/mongo/' + this.options['host'] + '/' + this.options['port'] + '/';
             if (!("document" in options)) {
                 throw("save_document: Missing document");
             }
@@ -783,7 +783,7 @@ Fom_mongo_ajax = $.extend({}, $.ui.fom_object.prototype, {
             retrieve collection statistics for selected collection
         */
         get_collection_stats: function(){
-            var url = '/fangofmongo/rest/mongo/' + encodeURIComponent(this.options['host']) + '/' + encodeURIComponent(this.options['port']) + '/';
+            var url = '/mongoadmin/rest/mongo/' + encodeURIComponent(this.options['host']) + '/' + encodeURIComponent(this.options['port']) + '/';
             var params = '';
             if (params != '') { params  = '?' + params; };
             try{
@@ -804,7 +804,7 @@ Fom_mongo_ajax = $.extend({}, $.ui.fom_object.prototype, {
             retrieve collection indexes for selected collection
         */
         get_collection_indexes: function(){
-            var url = '/fangofmongo/rest/mongo/' + encodeURIComponent(this.options['host']) + '/' + encodeURIComponent(this.options['port']) + '/';
+            var url = '/mongoadmin/rest/mongo/' + encodeURIComponent(this.options['host']) + '/' + encodeURIComponent(this.options['port']) + '/';
             var params = '';
             if (params != '') { params  = '?' + params; };
             try{
@@ -835,7 +835,7 @@ Fom_mongo_ajax = $.extend({}, $.ui.fom_object.prototype, {
             returns JSON with results
         */
         get_data: function(query, options){ 
-            var url = '/fangofmongo/rest/mongo/' + encodeURIComponent(this.options['host']) + '/' + encodeURIComponent(this.options['port']) + '/';
+            var url = '/mongoadmin/rest/mongo/' + encodeURIComponent(this.options['host']) + '/' + encodeURIComponent(this.options['port']) + '/';
             var params = '';
             query_data = {
                   q: JSON.stringify(query),
@@ -875,7 +875,7 @@ Fom_mongo_ajax = $.extend({}, $.ui.fom_object.prototype, {
             if (!('operation' in options) || !('subject' in options)) {
                 throw 'operation: missing params';
             }
-            var url = '/fangofmongo/rest/mongo/' + encodeURIComponent(this.options['host']) + '/' + encodeURIComponent(this.options['port']) + '/cmd/';
+            var url = '/mongoadmin/rest/mongo/' + encodeURIComponent(this.options['host']) + '/' + encodeURIComponent(this.options['port']) + '/cmd/';
             var data = {};
             switch(options['subject']) {
                 case 'server': 

@@ -34,7 +34,7 @@ function fom_init_login_form()
                     db_host = $("#db_host");
                   
                     if (bValid) {
-                        new_location = '/fangofmongo/ui/mongo/' + db_host.val() + '/' + db_port.val()+ '/';
+                        new_location = '/mongoadmin/ui/mongo/' + db_host.val() + '/' + db_port.val()+ '/';
                         $(this).dialog('close');
                         $(this).dialog('option', 'modal', false );
                         $(this).dialog('option', 'position', ['left','top'] );
